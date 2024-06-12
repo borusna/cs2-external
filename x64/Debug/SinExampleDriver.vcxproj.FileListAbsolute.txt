@@ -1,0 +1,1 @@
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\x64\Debug\SinExampleDriver.sys

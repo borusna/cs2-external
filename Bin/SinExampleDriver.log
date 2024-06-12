@@ -1,0 +1,16 @@
+﻿C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\SinExampleDriver.vcxproj(119,5): warning MSB4011: "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.props" cannot be imported again. It was already imported at "C:\Program Files (x86)\Windows Kits\10\build\WindowsDriver.Shared.props (352,3)". This is most likely a build authoring error. This subsequent import will be ignored. 
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\SinExampleDriver.vcxproj(198,5): warning MSB4011: "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.targets" cannot be imported again. It was already imported at "C:\Program Files (x86)\Windows Kits\10\build\WindowsDriver.common.targets (1878,3)". This is most likely a build authoring error. This subsequent import will be ignored. 
+  Building 'SinExampleDriver' with toolset 'WindowsKernelModeDriver10.0' and the 'Universal' target platform.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  Main.cpp
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\rw.h(5,35): warning C4100: 'pid': unreferenced formal parameter
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\rw.h(26,36): warning C4100: 'pid': unreferenced formal parameter
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\Main.cpp(70,67): warning C4244: '=': conversion from 'ULONG64' to 'ULONG', possible loss of data
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\Main.cpp(77,47): warning C4244: '=': conversion from 'ULONG64' to 'ULONG', possible loss of data
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\Main.cpp(85,25): warning C4244: '=': conversion from 'ULONG64' to 'ULONG', possible loss of data
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\Main.cpp(148,40): warning C4100: 'pDriverObject': unreferenced formal parameter
+C:\Users\test\Desktop\SinMapper\SinDriverExample\SinExampleDriver\Main.cpp(156,21): warning C4101: 'ioStatus': unreferenced local variable
+  SinExampleDriver.vcxproj -> C:\Users\test\Desktop\SinMapper\SinMapper\x64\Release\SinExampleDriver.sys
+  Driver is 'Universal'.
+  Inf2Cat task was skipped as there were no inf files to process
+  

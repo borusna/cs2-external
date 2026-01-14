@@ -15,4 +15,4 @@ I used kdmapper for the longest time to load the driver, however I just recommen
 
 # Credits
 - [@AdverseMiller](https://github.com/AdverseMiller)
-- [@panzer4or](https://github.com/panzer4or)
+- [@borusna](https://github.com/borusna)

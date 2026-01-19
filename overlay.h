@@ -238,7 +238,7 @@ void drawPlayerBones(HDC frame, ptr entity) {
     DeleteObject(hPen);
 }
 
-void printSpectatorList() {
+/*void printSpectatorList() {
     uintptr_t localPlayer = readvm<uintptr_t>(process, client + offsets::dwLocalPlayerController);
     if (!localPlayer) return;
 
@@ -247,7 +247,7 @@ void printSpectatorList() {
 
     uintptr_t entityList = readvm<uintptr_t>(process, client + offsets::dwEntityList);
     uintptr_t listEntry = readvm<uintptr_t>(process, entityList + 0x8 * ((targetHandle & 0x7FFF) >> 9) + 16);
-    uintptr_t targetEntity = readvm<uintptr_t>(process, listEntry + 0x78 * (targetHandle & 0x1FF));
+    uintptr_t targetEntity = readvm<uintptr_t>(process, listEntry + 0x70 * (targetHandle & 0x1FF));
     //std::cout << "on";
 
     std::vector<std::string> spectators;
@@ -281,7 +281,7 @@ void printSpectatorList() {
     for (const auto& name : spectators) {
         std::cout << " - " << name << std::endl;
     }
-}
+}*/
 
 
 void drawESP(HDC frame, int entityTeam, int playerTeam, ptr entity, ptr controller) {
@@ -374,7 +374,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             if(!isAlive) continue;
 
             ptr listEntry2 = readvm<ptr>(process, entityList + (0x8 * ((pawnHandle & 0x7FFF) >> 9) + 16));
-            ptr entity = readvm<ptr>(process, listEntry2 + (0x78 * (pawnHandle & 0x1FF)));
+            ptr entity = readvm<ptr>(process, listEntry2 + (0x70 * (pawnHandle & 0x1FF)));
             if (!entity) continue;
             
             int entityTeam = readvm<int>(process, entity + offsets::m_iTeamNum);

@@ -168,7 +168,7 @@ float distance3D(const Vector3& pos1, const Vector3& pos2) {
 void PopulatecontrollerCache() {
     controllerCache.clear();  
     for (int i = 0; i <= 64; i++) {
-        ptr controller = readvm<ptr>(process, listEntry + (i * 0x78));
+        ptr controller = readvm<ptr>(process, listEntry + (i * 0x70));
         if (!controller) continue;
         controllerCache.push_back(controller);
     }

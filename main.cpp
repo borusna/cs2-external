@@ -226,7 +226,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow) {
         wc.lpszClassName,
         TEXT("Menu"),
         WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME),
-        CW_USEDEFAULT, CW_USEDEFAULT, 200, 100,
+        CW_USEDEFAULT, CW_USEDEFAULT, 400, 500,
         NULL, NULL, hInstance, NULL);
 
     ShowWindow(hwnd, nCmdShow);
@@ -324,6 +324,7 @@ int main() {
     #endif
 
     client = getModuleBase(pid, L"client.dll");
+    std::cout << "client address: 0x" << std::hex << client << std::dec << std::endl;
 
     if (!client) {
         return 1;
@@ -406,23 +407,25 @@ void triggerbotFunc() {
 
             uintptr_t entityList = readvm<uintptr_t>(process, client + offsets::dwEntityList);
             uintptr_t entityEntry = readvm<uintptr_t>(process, entityList + 0x8 * (entityId >> 9) + 0x10);
-            uintptr_t entity = readvm<uintptr_t>(process, entityEntry + 120 * (entityId & 0x1FF));
+            uintptr_t entity = readvm<uintptr_t>(process, entityEntry + 0x70 * (entityId & 0x1FF));
 
             int entityTeam = readvm<int>(process, entity + offsets::m_iTeamNum);
             int playerTeam = readvm<int>(process, localPlayer + offsets::m_iTeamNum);
 
             if (entityTeam != playerTeam) {
+                
                 int entityHp = readvm<int>(process, entity + offsets::m_iHealth);
+                //std::cout << entityHp;
                 if (entityHp > 0) {
                     ptr playerNode = readvm<ptr>(process, entity + offsets::m_pGameSceneNode);
-                    if (!playerNode) return;
+                    if (!playerNode) continue;
 
                     ptr boneArrayAddress = readvm<ptr>(process, playerNode + offsets::m_modelState + 0x80);
-                    if (!boneArrayAddress) return;
+                    if (!boneArrayAddress) continue;
 
                     Vector3 headWorldPos = readvm<Vector3>(process, boneArrayAddress + bone_ids::head * 0x20);
                     Vector2 headScreenPos;
-                    if (!WorldToScreen(headWorldPos, &headScreenPos, view_matrix, width, height)) return;
+                    if (!WorldToScreen(headWorldPos, &headScreenPos, view_matrix, width, height)) continue;
 
                     float dx = headScreenPos.x - (width / 2);
                     float dy = headScreenPos.y - (height / 2);
@@ -442,14 +445,15 @@ void triggerbotFunc() {
                             }
                         }
                     } else {
-                            if (legitTrigger) {
-                                Sleep(rand() % 13 + 21);
-                                clickMouse(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
-                                Sleep(rand() % 6 + 7);
-                            } else {
-                                clickMouse(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
-                                Sleep(1);
-                            }
+                        if (legitTrigger) {
+                            Sleep(rand() % 13 + 21);
+                            clickMouse(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
+                            Sleep(rand() % 6 + 7);
+                        } else {
+                            std::cout << "CAN CLICK!" << std::endl;
+                            clickMouse(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
+                            Sleep(1);
+                        }
                     }
                 }
             }
@@ -469,12 +473,15 @@ void blockBotFunc() {
         Sleep(1);
 
         if (blockBot && GetAsyncKeyState(blockBotKey)) {
+            
             uintptr_t localPlayerPawn = readvm<uintptr_t>(process, client + offsets::dwLocalPlayerPawn);
             ptr playerNode = readvm<ptr>(process, localPlayerPawn + offsets::m_pGameSceneNode);
             Vector3 playerPos = readvm<Vector3>(process, playerNode + offsets::m_vecAbsOrigin);
 
             uintptr_t localController = readvm<uintptr_t>(process, client + offsets::dwLocalPlayerController);
             int playerTeam = readvm<int>(process, localPlayerPawn + offsets::m_iTeamNum);
+
+            uintptr_t entityList = readvm<uintptr_t>(process, client + offsets::dwEntityList);
 
             ptr closestEntity = 0;
             float closestDistSqr = FLT_MAX;
@@ -485,8 +492,9 @@ void blockBotFunc() {
                 if (!pawnHandle) continue;
 
                 ptr listEntry2 = readvm<ptr>(process, entityList + (0x8 * ((pawnHandle & 0x7FFF) >> 9) + 16));
-                ptr entity = readvm<ptr>(process, listEntry2 + (0x78 * (pawnHandle & 0x1FF)));
+                ptr entity = readvm<ptr>(process, listEntry2 + (0x70 * (pawnHandle & 0x1FF)));
                 if (!entity) continue;
+                std::cout << "hello" << std::endl;
 
                 int entityTeam = readvm<int>(process, entity + offsets::m_iTeamNum);
                 if (entityTeam != playerTeam || entity == localPlayerPawn) continue;
@@ -550,7 +558,7 @@ void blockBotFunc() {
     }
 }
 
-void bhopFunc() {
+void bhopFunc() { // this is broken , fix
     while (true) {
         //Sleep(1);
         if (bhop && GetAsyncKeyState(VK_SPACE)) {
@@ -558,7 +566,7 @@ void bhopFunc() {
             if (onGround) {
                 press(VK_F20);
                 Sleep(1);
-                //std::cout << onGround;
+                std::cout << onGround;
             }
         } else {
             Sleep(0);
@@ -569,8 +577,6 @@ void bhopFunc() {
 void keyExitEvent() {
     while (1) {
         Sleep(10);
-
-        
         if (GetAsyncKeyState(0xA1)) exit(1);
     }
 }

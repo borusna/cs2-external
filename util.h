@@ -55,28 +55,6 @@ T customMax(T a, T b) {
     return (a > b) ? a : b;
 }
 
-bool StopService(const std::wstring& serviceName) {
-    SC_HANDLE hSCManager = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT);
-    if (!hSCManager) return false;
-
-    SC_HANDLE hService = OpenServiceW(hSCManager, serviceName.c_str(), SERVICE_STOP | SERVICE_QUERY_STATUS);
-    if (!hService) {
-        CloseServiceHandle(hSCManager);
-        return false;
-    }
-
-    SERVICE_STATUS status;
-    if (!ControlService(hService, SERVICE_CONTROL_STOP, &status)) {
-        CloseServiceHandle(hService);
-        CloseServiceHandle(hSCManager);
-        return false;
-    }
-
-    CloseServiceHandle(hService);
-    CloseServiceHandle(hSCManager);
-    return true;
-}
-
 DWORD getPID(const std::wstring& processName) {
     DWORD processId = 0;
     HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
@@ -200,7 +178,7 @@ inline void press(WORD key) {
 void keyDown(WORD vk) {
     INPUT i = { INPUT_KEYBOARD };
     i.ki.wVk = vk;
-    i.ki.dwFlags = 0;          // key down
+    i.ki.dwFlags = 0;
     SendInput(1, &i, sizeof(i));
 }
 
@@ -265,7 +243,7 @@ void LoadConfig() {
                         } else {
                             std::cerr << "Invalid ESP mode: " << value << std::endl;
                         }
-					} else if (key == "ESPKey") { // esp key
+					} else if (key == "ESPKey") {
                         if (value.find("0x") == 0) {
                             espKey = std::stoi(value.substr(2), nullptr, 16);
                         } else {

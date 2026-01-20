@@ -432,7 +432,7 @@ void triggerbotFunc() {
                     float distance = sqrtf(dx * dx + dy * dy);
 
                     if(headOnly) {
-                        if (distance < 20.5f) {
+                        if (distance < 15.5f) { // pretty horrible way of checking if head only, but works extremely well for just using a float distance to bone. todo: just check if bone id = head.
                             //std::cout << "[DEBUG] GameSceneNode: " << std::hex << playerNode << "\n";
                             //std::cout << "[DEBUG] Bone Array Address: " << std::hex << boneArrayAddress << "\n";
                             if (legitTrigger) {
@@ -450,7 +450,7 @@ void triggerbotFunc() {
                             clickMouse(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
                             Sleep(rand() % 6 + 7);
                         } else {
-                            std::cout << "CAN CLICK!" << std::endl;
+                            //std::cout << "CAN CLICK!" << std::endl;
                             clickMouse(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP);
                             Sleep(1);
                         }
@@ -494,7 +494,6 @@ void blockBotFunc() {
                 ptr listEntry2 = readvm<ptr>(process, entityList + (0x8 * ((pawnHandle & 0x7FFF) >> 9) + 16));
                 ptr entity = readvm<ptr>(process, listEntry2 + (0x70 * (pawnHandle & 0x1FF)));
                 if (!entity) continue;
-                std::cout << "hello" << std::endl;
 
                 int entityTeam = readvm<int>(process, entity + offsets::m_iTeamNum);
                 if (entityTeam != playerTeam || entity == localPlayerPawn) continue;
@@ -558,14 +557,15 @@ void blockBotFunc() {
     }
 }
 
-void bhopFunc() { // this is broken , fix
+void bhopFunc() { // this is so laggy, but it is as good as it will get with a read-only experience. valve has combatted de-subtick configs so this doesn't work as well as it did a while ago.
     while (true) {
         //Sleep(1);
-        if (bhop && GetAsyncKeyState(VK_SPACE)) {
+        
+        if (bhop && GetAsyncKeyState(0x45)) {
             int onGround = (readvm<int>(process, player + offsets::m_fFlags) & 1 << 0);
             if (onGround) {
-                press(VK_F20);
-                Sleep(1);
+                keyDown(0x4A);
+                keyUp(0x4A);
                 std::cout << onGround;
             }
         } else {

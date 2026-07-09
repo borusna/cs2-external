@@ -20,4 +20,4 @@ This is source code only. It is for people that know what they're doing and can 
 
 # Credits
 - [@AdverseMiller](https://github.com/AdverseMiller)
-- [@borusna](https://github.com/borusna)
+- [@KAZARiN68](https://github.com/KAZARiN68)
